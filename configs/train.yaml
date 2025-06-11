@@ -1,0 +1,11 @@
+# @package _global_
+
+# Default configurations
+defaults:
+  - _self_
+  - datamodule: default
+  - training_config: default
+  - model: default
+  - checkpoints: default
+  - logger: default
+  - trainer: default

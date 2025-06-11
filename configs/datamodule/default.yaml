@@ -1,0 +1,6 @@
+rna_adata_path:
+codex_adata_path: 
+shared_genes:
+label_columns:
+obsm_key_rna:
+obsm_key_codex:

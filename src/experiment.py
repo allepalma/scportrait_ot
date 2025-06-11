@@ -2,8 +2,11 @@ from dataloader import SingleCellAndCodexDataset
 from model import FlowMatchingModelWrapper
 from torch.utils.data import random_split
 import torch
+from pytorch_lightning.callbacks import ModelCheckpoint
+from pytorch_lightning.loggers import WandbLogger
+from pytorch_lightning import Trainer
 
-class CfgenEstimator:
+class FlowMatchingExperiment:
     def __init__(self, args):
         self.args =  args 
         self.init_datamodule()
@@ -44,14 +47,36 @@ class CfgenEstimator:
 
 
     def init_trainer(self):
-        pass
-            
-    def init_feature_embeddings(self):
-        pass
-
+        """
+        Initialize Trainer
+        """
+        # Callbacks for saving checkpoints 
+        checkpoint_callback = ModelCheckpoint(dirpath=self.args.training_config.training_dir / "checkpoints", 
+                                                **self.args.checkpoints)
+        callbacks = [checkpoint_callback]
+        
+        # Logger settings 
+        self.logger = WandbLogger(save_dir=self.args.training_config.training_dir,
+                                    **self.args.logger)
+        
+        self.trainer_generative = Trainer(callbacks=callbacks, 
+                                        default_root_dir=self.args.training_config.training_dir, 
+                                        logger=self.logger,
+                                        **self.args.trainer)
     def train(self):
-        pass
+        """
+        Train the generative model using the provided trainer.
+        """
+        self.trainer_generative.fit(
+            self.model,
+            train_dataloaders=self.train_dataloader,
+            val_dataloaders=self.valid_dataloader)
     
     def test(self):
-        pass
+        """
+        Test the generative model.
+        """
+        self.trainer_generative.test(
+            self.model,
+            dataloaders=self.valid_dataloader)
     

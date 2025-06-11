@@ -1,0 +1,8 @@
+hidden_dim: 1024
+num_hidden_layers: 3
+time_embedding_dim: 128
+use_batchnorm: False
+sigma: 0.0
+flavor: "cfm"
+learning_rate: 0.0001
+weight_decay: 0.000001
