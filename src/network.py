@@ -38,10 +38,10 @@ class TimeConditionedMLP(nn.Module):
         self.time_embedding_dim = time_embedding_dim
         self.source_condition_dim = source_condition_dim
         self.use_batchnorm = use_batchnorm
-        act_fn = nn.SELU() if not use_batchnorm else nn.ReLU()
+        act_fn = nn.SELU() if not use_batchnorm else nn.ELU()
 
         layers = []
-        in_dim = input_dim + time_embedding_dim + source_condition_dim
+        in_dim = input_dim + source_condition_dim + time_embedding_dim
 
         for _ in range(num_hidden_layers):
             layers.append(nn.Linear(in_dim, hidden_dim))

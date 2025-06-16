@@ -9,13 +9,14 @@ class SingleCellAndCodexDataset(Dataset):
     def __init__(self, 
                  rna_adata_path, 
                  codex_adata_path, 
-                 shared_genes,
                  label_columns, 
                  obsm_key_rna=None, 
                  obsm_key_codex=None):
         
+        # Read datasets
         self.rna_adata = sc.read_h5ad(rna_adata_path)
         self.codex_adata = sc.read_h5ad(codex_adata_path)
+        
         # Get the cell state to match 
         if obsm_key_rna:
             self.X_rna = self.rna_adata.obsm[obsm_key_rna]
@@ -27,9 +28,9 @@ class SingleCellAndCodexDataset(Dataset):
         else:
             self.X_codex = self.codex_adata.X
             
-        # Get shared cell states
-        self.X_rna_shared = self.rna_adata[:, shared_genes].X
-        self.X_codex_shared = self.codex_adata[:, shared_genes].X
+        # Get shared cell states - will match in gene ids 
+        self.X_rna_shared = self.rna_adata.X
+        self.X_codex_shared = self.codex_adata.X
 
         # Input dim
         self.input_dim = self.X_rna.shape[1]

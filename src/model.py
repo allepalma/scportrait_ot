@@ -14,7 +14,8 @@ class FlowMatchingModelWrapper(pl.LightningModule):
                  sigma: float = 0, 
                  flavor: str = "cfm", 
                  learning_rate: float = 1e-4, 
-                 weight_decay: float = 1e-6):
+                 weight_decay: float = 1e-6, 
+                 distance="euclidean"):
         
         super().__init__()
 
@@ -25,13 +26,14 @@ class FlowMatchingModelWrapper(pl.LightningModule):
         self.v_mlp = TimeConditionedMLP(input_dim=input_dim, 
                                         hidden_dim=hidden_dim,
                                         num_hidden_layers=num_hidden_layers,
-                                        time_embedding_dim=time_embedding_dim,
                                         source_condition_dim=source_condition_dim,
+                                        time_embedding_dim=time_embedding_dim,
                                         use_batchnorm=use_batchnorm)
         
         # Initialize the Flow Matching framework
         self.fm = SourceConditionalFlowMatcher(sigma=sigma, 
-                                               flavor=flavor)    
+                                               flavor=flavor,
+                                               distance=distance)    
         
         # Other parameters 
         self.learning_rate = learning_rate
@@ -77,10 +79,10 @@ class FlowMatchingModelWrapper(pl.LightningModule):
 
     def _step(self, batch):
         # Perform OT reordering 
-        x0, _, x0_shared, _, t, xt, ut = self.fm.sample_location_and_conditional_flow(x0=batch["codex"],
-                                                                                        x1=batch["rna"], 
-                                                                                        x0_shared=batch["codex_shared"],
-                                                                                        x1_shared=batch["rna_shared"])
+        x0, _, _, _, t, xt, ut = self.fm.sample_location_and_conditional_flow(x0=batch["codex"],
+                                                                                x1=batch["rna"], 
+                                                                                x0_shared=batch["codex_shared"],
+                                                                                x1_shared=batch["rna_shared"])
         
         # Evalauate flow matching model
         vt = self.v_mlp(xt, x0, t)

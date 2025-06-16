@@ -10,11 +10,12 @@ class FlowMatchingExperiment:
     def __init__(self, args):
         self.args =  args 
         self.init_datamodule()
+        self.init_model()
+        self.init_trainer()
 
     def init_datamodule(self):
         self.dataset = SingleCellAndCodexDataset(self.args.datamodule.rna_adata_path, 
                                                     self.args.datamodule.codex_adata_path, 
-                                                    self.args.datamodule.shared_genes,
                                                     self.args.datamodule.label_columns, 
                                                     self.args.datamodule.obsm_key_rna, 
                                                     self.args.datamodule.obsm_key_codex)    
@@ -43,7 +44,8 @@ class FlowMatchingExperiment:
                                                 sigma=self.args.model.sigma, 
                                                 flavor=self.args.model.flavor, 
                                                 learning_rate=self.args.model.learning_rate, 
-                                                weight_decay=self.args.model.weight_decay)
+                                                weight_decay=self.args.model.weight_decay, 
+                                                distance=self.args.model.distance)
 
 
     def init_trainer(self):

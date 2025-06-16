@@ -1,7 +1,5 @@
 # from https://github.com/atong01/conditional-flow-matching/blob/main/torchcfm/conditional_flow_matching.py
 
-import math
-import warnings
 from typing import Union
 
 import torch
@@ -210,7 +208,7 @@ class ConditionalFlowMatcher:
         return 2 * sigma_t / (self.sigma**2 + 1e-8)
 
 class SourceConditionalFlowMatcher(ConditionalFlowMatcher):
-    def __init__(self, sigma: Union[float, int] = 0.0, flavor="cfm"):
+    def __init__(self, sigma: Union[float, int] = 0.0, flavor="cfm", distance="euclidean"):
         r"""Initialize the ConditionalFlowMatcher class. It requires the hyper-parameter $\sigma$.
 
         Parameters
@@ -219,9 +217,10 @@ class SourceConditionalFlowMatcher(ConditionalFlowMatcher):
         ot_sampler: exact OT method to draw couplings (x0, x1) (see Eq.(17) [1]).
         """
         super().__init__(sigma)
-        self.ot_sampler = OTPlanSampler(method="exact")  # Define OT plan 
+        self.ot_sampler = OTPlanSampler(method="exact", distance=distance)  # Define OT plan 
         self.sigma = sigma 
         self.flavor = flavor
+        self.distance = distance
     
     def compute_mu_t(self, eps, x1, t):
         """
@@ -335,6 +334,7 @@ class SourceConditionalFlowMatcher(ConditionalFlowMatcher):
                                              x0_shared,
                                              x1_shared, 
                                              t=None):
+        
         # Resample source and target cells from OT sampling 
         idx_source, idx_target = self.ot_sampler.sample_plan(x0_shared, x1_shared)
         x0 = x0[idx_source]  # Reorder source
