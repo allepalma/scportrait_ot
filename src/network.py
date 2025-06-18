@@ -16,7 +16,7 @@ def timestep_embedding(timesteps, dim, max_period=10000):
         * torch.arange(start=0, end=half, dtype=torch.float32, device=timesteps.device)
         / half
     )
-    args = timesteps[:, None].float() * freqs[None]
+    args = timesteps.float() * freqs[None]
     embedding = torch.cat([torch.cos(args), torch.sin(args)], dim=-1)
     if dim % 2:
         embedding = torch.cat([embedding, torch.zeros_like(embedding[:, :1])], dim=-1)
@@ -53,7 +53,7 @@ class TimeConditionedMLP(nn.Module):
         self.hidden = nn.Sequential(*layers)
         self.output = nn.Linear(hidden_dim, input_dim)
 
-    def forward(self, x: torch.Tensor, t: torch.Tensor, x0: torch.Tensor):
+    def forward(self, x: torch.Tensor,  x0: torch.Tensor, t: torch.Tensor):
         """
         x: shape (batch_size, input_dim)
         t: shape (batch_size,) or (batch_size, 1)

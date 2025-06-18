@@ -1,3 +1,4 @@
+from pathlib import Path
 from dataloader import SingleCellAndCodexDataset 
 from model import FlowMatchingModelWrapper
 from torch.utils.data import random_split
@@ -62,9 +63,9 @@ class FlowMatchingExperiment:
                                     **self.args.logger)
         
         self.trainer_generative = Trainer(callbacks=callbacks, 
-                                        default_root_dir=self.args.training_config.training_dir, 
-                                        logger=self.logger,
-                                        **self.args.trainer)
+                                            default_root_dir=self.args.training_config.training_dir, 
+                                            logger=self.logger,
+                                            **self.args.trainer)
     def train(self):
         """
         Train the generative model using the provided trainer.

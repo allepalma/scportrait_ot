@@ -62,7 +62,7 @@ class FlowMatchingModelWrapper(pl.LightningModule):
         Returns:
             torch.Tensor: Loss value.
         """
-        return self._step(batch)
+        return self._step(batch, "train")
 
     def validation_step(self, batch, batch_idx):
         """
@@ -75,11 +75,11 @@ class FlowMatchingModelWrapper(pl.LightningModule):
         Returns:
             torch.Tensor: Loss value.
         """
-        return self._step(batch)
+        return self._step(batch, "valid")
 
-    def _step(self, batch):
+    def _step(self, batch, phase):
         # Perform OT reordering 
-        x0, _, _, _, t, xt, ut = self.fm.sample_location_and_conditional_flow(x0=batch["codex"],
+        x0, _, t, xt, ut = self.fm.sample_location_and_conditional_flow(x0=batch["codex"],
                                                                                 x1=batch["rna"], 
                                                                                 x0_shared=batch["codex_shared"],
                                                                                 x1_shared=batch["rna_shared"])
@@ -92,7 +92,7 @@ class FlowMatchingModelWrapper(pl.LightningModule):
         
         # Save results
         metrics = {
-            f"{loss}": loss.mean()}
+            f"{phase}/loss": loss.mean()}
         self.log_dict(metrics, prog_bar=True)
         
         return loss.mean()

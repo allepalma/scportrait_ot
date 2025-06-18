@@ -344,7 +344,7 @@ class SourceConditionalFlowMatcher(ConditionalFlowMatcher):
         if t is None:
             t = torch.rand(x0.shape[0]).type_as(x0)
         # Sample noise 
-        eps = self.sample_noise_like(x0)
+        eps = self.sample_noise_like(x1)
         
         # Sample xt 
         xt = self.sample_xt(x1, t, eps)

@@ -41,7 +41,7 @@ class SingleCellAndCodexDataset(Dataset):
         self.encoded_labels = {}
         for column in label_columns:
             label_encoder = LabelEncoder()
-            encoded = label_encoder.fit_transform(self.rna_adata.obs[column])
+            encoded = label_encoder.fit_transform(self.rna_adata.obs[column]).astype(float)
             self.encoded_labels[column] = encoded
             self.label_maps[column] = dict(enumerate(label_encoder.classes_))
 
@@ -52,19 +52,26 @@ class SingleCellAndCodexDataset(Dataset):
         return len(self.rna_adata)
 
     def __getitem__(self, idx):
-        # Get observations 
-        X_codex_batch = torch.from_numpy(self.X_codex[idx].toarray())
-        X_codex_shared_batch = torch.from_numpy(self.X_codex_shared[idx].toarray())
+        # Get observations and convert to float32
+        X_codex_batch = torch.from_numpy(self.X_codex[idx]).float()
+        X_codex_shared_batch = torch.from_numpy(self.X_codex_shared[idx]).float()
 
         idx_rna = np.random.choice(range(self._len_rna()))
-        X_rna_batch = torch.from_numpy(self.X_rna[idx_rna].toarray())
-        X_rna_shared_batch = torch.from_numpy(self.X_rna_shared[idx_rna].toarray())
+        X_rna_batch = torch.from_numpy(self.X_rna[idx_rna]).float()
+        X_rna_shared_batch = torch.from_numpy(self.X_rna_shared[idx_rna]).float()
         
-        encoded_labels = {key: torch.from_numpy(val[idx]) for key, val in self.encoded_labels.items()}
-        
-        return dict(codex=X_codex_batch, 
-                    rna=X_rna_batch,
-                    codex_shared=X_codex_shared_batch, 
-                    rna_shared=X_rna_shared_batch, 
-                    labels=encoded_labels)
+        # Ensure labels are also float32
+        encoded_labels = {
+            key: torch.tensor(val[idx], dtype=torch.float32) if np.isscalar(val[idx]) 
+                else torch.from_numpy(val[idx]).float()
+            for key, val in self.encoded_labels.items()
+        }
+
+        return dict(
+            codex=X_codex_batch, 
+            rna=X_rna_batch,
+            codex_shared=X_codex_shared_batch, 
+            rna_shared=X_rna_shared_batch, 
+            labels=encoded_labels
+        )
         
