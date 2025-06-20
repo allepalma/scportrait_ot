@@ -53,19 +53,30 @@ class FlowMatchingExperiment:
         """
         Initialize Trainer
         """
-        # Callbacks for saving checkpoints 
-        checkpoint_callback = ModelCheckpoint(dirpath=self.args.training_config.training_dir / "checkpoints", 
-                                                **self.args.checkpoints)
-        callbacks = [checkpoint_callback]
-        
-        # Logger settings 
+        # Initialize WandbLogger
         self.logger = WandbLogger(save_dir=self.args.training_config.training_dir,
-                                    **self.args.logger)
-        
-        self.trainer_generative = Trainer(callbacks=callbacks, 
-                                            default_root_dir=self.args.training_config.training_dir, 
-                                            logger=self.logger,
-                                            **self.args.trainer)
+                                **self.args.logger)
+
+        # Use wandb run name to create a subfolder
+        run_name = self.logger.experiment.name
+        run_dir = self.args.training_config.training_dir / run_name
+        run_dir.mkdir(parents=True, exist_ok=True)
+
+        # Callbacks for saving checkpoints in the run-specific folder
+        checkpoint_callback = ModelCheckpoint(
+            dirpath=run_dir / "checkpoints",
+            **self.args.checkpoints
+        )
+        callbacks = [checkpoint_callback]
+
+        # Initialize trainer with custom dir
+        self.trainer_generative = Trainer(
+            callbacks=callbacks,
+            default_root_dir=run_dir,
+            logger=self.logger,
+            **self.args.trainer
+        )
+    
     def train(self):
         """
         Train the generative model using the provided trainer.

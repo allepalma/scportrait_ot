@@ -2,6 +2,8 @@ import torch
 import pytorch_lightning as pl
 from flow_matching import SourceConditionalFlowMatcher
 from network import TimeConditionedMLP
+from ode import ConditionalODE
+from torchdiffeq import odeint
 
 class FlowMatchingModelWrapper(pl.LightningModule):
     def __init__(self, 
@@ -21,6 +23,7 @@ class FlowMatchingModelWrapper(pl.LightningModule):
 
         # Store hyperparams
         self.save_hyperparameters()
+        self.input_dim = input_dim
         
         # Initialize neural network
         self.v_mlp = TimeConditionedMLP(input_dim=input_dim, 
@@ -96,4 +99,42 @@ class FlowMatchingModelWrapper(pl.LightningModule):
         self.log_dict(metrics, prog_bar=True)
         
         return loss.mean()
-    
+
+    def pushforward(
+        self,
+        x0: torch.Tensor,
+        n_timesteps: int = 100,
+        solver: str = "dopri5",
+        atol: float = 1e-5,
+        rtol: float = 1e-5
+        ):
+        """
+        Solves the ODE from x0 over time using the learned flow.
+
+        Args:
+            x0 (torch.Tensor): Initial condition.
+            n_timesteps (int): Number of time steps.
+            solver (str): ODE solver to use (e.g., 'dopri5', 'rk4').
+            atol (float): Absolute tolerance.
+            rtol (float): Relative tolerance.
+            method_kwargs (dict): Extra kwargs passed to the solver.
+            t0 (float): Initial time.
+            t1 (float): Final time.
+
+        Returns:
+            torch.Tensor: The trajectory of the solution.
+        """
+        time = torch.linspace(0, 1, n_timesteps, device=x0.device)
+        node = ConditionalODE(self.v_mlp, x0)
+        eps = torch.randn(x0.shape[0], self.input_dim)
+
+        trajectory = odeint(
+            node,
+            eps,
+            time,
+            method=solver,
+            atol=atol,
+            rtol=rtol
+        )
+        return trajectory[-1]
+        
