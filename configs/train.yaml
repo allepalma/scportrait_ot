@@ -3,9 +3,11 @@
 # Default configurations
 defaults:
   - _self_
-  - datamodule: default
-  - training_config: default
-  - model: default
+  - hparam_search: null
   - checkpoints: default
+  - datamodule: healthy
+  - launcher: default
   - logger: default
+  - model: default
   - trainer: default
+  - training_config: default

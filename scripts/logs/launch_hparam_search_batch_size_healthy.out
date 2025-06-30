@@ -1,0 +1,5 @@
+[2025-06-30 12:28:14,835][HYDRA] Submitit 'slurm' sweep output dir : multirun/2025-06-30/12-28-12
+[2025-06-30 12:28:14,836][HYDRA] 	#0 : training_config.batch_size=256 datamodule=healthy hparam_search=sweep_batch_size logger.project=scportrait_ot_sweep_batch_size_healthy
+[2025-06-30 12:28:14,843][HYDRA] 	#1 : training_config.batch_size=512 datamodule=healthy hparam_search=sweep_batch_size logger.project=scportrait_ot_sweep_batch_size_healthy
+[2025-06-30 12:28:14,848][HYDRA] 	#2 : training_config.batch_size=1024 datamodule=healthy hparam_search=sweep_batch_size logger.project=scportrait_ot_sweep_batch_size_healthy
+[2025-06-30 12:28:14,854][HYDRA] 	#3 : training_config.batch_size=2048 datamodule=healthy hparam_search=sweep_batch_size logger.project=scportrait_ot_sweep_batch_size_healthy

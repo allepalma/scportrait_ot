@@ -59,7 +59,7 @@ class FlowMatchingExperiment:
 
         # Use wandb run name to create a subfolder
         run_name = self.logger.experiment.name
-        run_dir = self.args.training_config.training_dir / run_name
+        run_dir = Path(self.args.training_config.training_dir) / run_name
         run_dir.mkdir(parents=True, exist_ok=True)
 
         # Callbacks for saving checkpoints in the run-specific folder

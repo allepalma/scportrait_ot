@@ -1,0 +1,4 @@
+[2025-06-22 23:09:39,027][HYDRA] Submitit 'slurm' sweep output dir : multirun/2025-06-22/23-09-37
+[2025-06-22 23:09:39,029][HYDRA] 	#0 : model.distance=euclidean datamodule=tonsilitis hparam_search=sweep_distance logger.project=scportrait_ot_sweep_distance_tonsilitis
+[2025-06-22 23:09:39,037][HYDRA] 	#1 : model.distance=inverse_correlation datamodule=tonsilitis hparam_search=sweep_distance logger.project=scportrait_ot_sweep_distance_tonsilitis
+[2025-06-22 23:09:39,043][HYDRA] 	#2 : model.distance=cosine datamodule=tonsilitis hparam_search=sweep_distance logger.project=scportrait_ot_sweep_distance_tonsilitis

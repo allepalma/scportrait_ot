@@ -1,0 +1,64 @@
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+Error executing job with overrides: ['training_config.batch_size=256', 'datamodule=tonsilitis', 'hparam_search=sweep_batch_size', 'logger.project=scportrait_ot_sweep_batch_size_tonsilitis']
+Traceback (most recent call last):
+  File "/ictstr01/home/icb/alessandro.palma/environment/scportrait_ot/src/main.py", line 30, in <module>
+    train()
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/main.py", line 94, in decorated_main
+    _run_hydra(
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/utils.py", line 394, in _run_hydra
+    _run_app(
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/utils.py", line 465, in _run_app
+    run_and_report(
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/utils.py", line 223, in run_and_report
+    raise ex
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/utils.py", line 220, in run_and_report
+    return func()
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/utils.py", line 466, in <lambda>
+    lambda: hydra.multirun(
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/hydra.py", line 162, in multirun
+    ret = sweeper.sweep(arguments=task_overrides)
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/core_plugins/basic_sweeper.py", line 181, in sweep
+    _ = r.return_value
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/core/utils.py", line 260, in return_value
+    raise self._return_value
+lightning_fabric.utilities.exceptions.MisconfigurationException: No `test_step()` method defined to run `Trainer.test`.
+Traceback (most recent call last):
+  File "/ictstr01/home/icb/alessandro.palma/environment/scportrait_ot/src/main.py", line 30, in <module>
+    train()
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/main.py", line 94, in decorated_main
+    _run_hydra(
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/utils.py", line 394, in _run_hydra
+    _run_app(
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/utils.py", line 465, in _run_app
+    run_and_report(
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/utils.py", line 223, in run_and_report
+    raise ex
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/utils.py", line 220, in run_and_report
+    return func()
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/utils.py", line 466, in <lambda>
+    lambda: hydra.multirun(
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/hydra.py", line 162, in multirun
+    ret = sweeper.sweep(arguments=task_overrides)
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/core_plugins/basic_sweeper.py", line 181, in sweep
+    _ = r.return_value
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/core/utils.py", line 260, in return_value
+    raise self._return_value
+lightning_fabric.utilities.exceptions.MisconfigurationException: No `test_step()` method defined to run `Trainer.test`.

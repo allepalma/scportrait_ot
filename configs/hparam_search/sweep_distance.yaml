@@ -1,0 +1,7 @@
+# @package _global_
+
+hydra:
+  sweeper:
+    params:
+      model.distance: euclidean, inverse_correlation, cosine
+      
