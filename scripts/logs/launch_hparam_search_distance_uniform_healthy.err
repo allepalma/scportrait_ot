@@ -17,4 +17,4 @@ See 'conda init --help' for more information and options.
 IMPORTANT: You may need to close and restart your shell after running 'conda init'.
 
 
-slurmstepd: error: *** JOB 26554091 ON cpusrv113 CANCELLED AT 2025-06-30T14:14:37 ***
+slurmstepd: error: *** JOB 26565431 ON cpusrv58 CANCELLED AT 2025-06-30T14:50:04 ***
