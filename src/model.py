@@ -83,9 +83,9 @@ class FlowMatchingModelWrapper(pl.LightningModule):
     def _step(self, batch, phase):
         # Perform OT reordering 
         x0, _, t, xt, ut = self.fm.sample_location_and_conditional_flow(x0=batch["codex"],
-                                                                                x1=batch["rna"], 
-                                                                                x0_shared=batch["codex_shared"],
-                                                                                x1_shared=batch["rna_shared"])
+                                                                        x1=batch["rna"], 
+                                                                        x0_shared=batch["codex_shared"],
+                                                                        x1_shared=batch["rna_shared"])
         
         # Evalauate flow matching model
         vt = self.v_mlp(xt, x0, t)

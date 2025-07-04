@@ -19,7 +19,9 @@ class FlowMatchingExperiment:
                                                     self.args.datamodule.codex_adata_path, 
                                                     self.args.datamodule.label_columns, 
                                                     self.args.datamodule.obsm_key_rna, 
-                                                    self.args.datamodule.obsm_key_codex)    
+                                                    self.args.datamodule.obsm_key_codex, 
+                                                    self.args.datamodule.rna_sampling_label, 
+                                                    self.args.datamodule.uniform_sampling_rna)    
                                                     
         
         self.train_data, self.valid_data = random_split(self.dataset,
