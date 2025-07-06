@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from typing import List, Optional, Callable
 import math
 
 def timestep_embedding(timesteps, dim, max_period=10000):
@@ -22,6 +23,55 @@ def timestep_embedding(timesteps, dim, max_period=10000):
         embedding = torch.cat([embedding, torch.zeros_like(embedding[:, :1])], dim=-1)
     return embedding
 
+class MLP(nn.Module):
+    def __init__(
+        self,
+        dims: List[int],
+        batch_norm: bool,
+        dropout: bool,
+        dropout_p: float,
+        activation: Optional[Callable] = nn.ELU,
+        final_activation: Optional[str] = None,
+    ):
+        super().__init__()
+        # Attribute initialization
+        self.dims = dims
+        self.batch_norm = batch_norm
+        self.dropout = dropout
+        self.dropout_p = dropout_p
+        self.activation = activation
+        self.final_activation_type = final_activation
+
+        layers = []
+        for i in range(len(dims) - 2):
+            in_dim = dims[i]
+            out_dim = dims[i + 1]
+            layers.append(nn.Linear(in_dim, out_dim))
+            if batch_norm:
+                layers.append(nn.BatchNorm1d(out_dim))
+            layers.append(activation())
+            if dropout:
+                layers.append(nn.Dropout(dropout_p))
+
+        # Final layer (no activation)
+        layers.append(nn.Linear(dims[-2], dims[-1]))
+        self.net = nn.Sequential(*layers)
+
+        if final_activation == "tanh":
+            self.final_activation = nn.Tanh()
+        elif final_activation == "sigmoid":
+            self.final_activation = nn.Sigmoid()
+        else:
+            self.final_activation = None
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """
+        x: shape (batch_size, dims[0])
+        """
+        x = self.net(x)
+        if self.final_activation is not None:
+            x = self.final_activation(x)
+        return x
 
 class TimeConditionedMLP(nn.Module):
     def __init__(
