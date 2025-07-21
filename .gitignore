@@ -199,6 +199,7 @@ cython_debug/
 # Additional folders
 multirun/
 outputs/
+project_folder
 
 # Additional file extensions 
 *.out
