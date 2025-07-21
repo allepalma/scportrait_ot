@@ -1,12 +1,6 @@
 # Imports
 import numpy as np 
-import torch
-from torch.utils.data import Dataset
-import scanpy as sc
-from sklearn.preprocessing import LabelEncoder
-
-# Imports
-import numpy as np 
+import scipy.sparse as sp
 import torch
 from torch.utils.data import Dataset
 import scanpy as sc
@@ -25,13 +19,24 @@ class EmbeddingDecoderDataset(Dataset):
         self.adata = sc.read_h5ad(adata_path)
         
         # Convert count matrix and embeddings to PyTorch tensors
-        self.X = torch.from_numpy(self.adata.layers[count_label].astype('float32'))
+        if count_label is not None:
+            self.X = torch.from_numpy(self.adata.layers[count_label].astype('float32'))
+        else:
+            if sp.issparse(self.adata.X):
+                self.X = torch.from_numpy(self.adata.X.todense().astype('float32'))
+            else:
+                self.X = torch.from_numpy(self.adata.X.astype('float32'))
         self.X_emb = torch.from_numpy(self.adata.obsm[embedding_label].values.astype('float32'))
+        
+        self.input_dim = self.X_emb.shape[1]
+        self.output_dim = self.X.shape[1]
         
         label_encoder = LabelEncoder()
         batch_data = self.adata.obs[batch_label].astype(str)  # ensure strings
         batch_encoded = label_encoder.fit_transform(batch_data)
         self.batch_data = torch.tensor(batch_encoded, dtype=torch.long)
+        
+        del self.adata
         
         # One-hot encode batch labels
         num_classes = len(label_encoder.classes_)
@@ -48,7 +53,6 @@ class EmbeddingDecoderDataset(Dataset):
         }
         return batch_dict
     
-        
 class SingleCellAndCodexDataset(Dataset):
     def __init__(self, 
                  rna_adata_path, 
@@ -65,7 +69,7 @@ class SingleCellAndCodexDataset(Dataset):
         
         # Get the cell state to match 
         if obsm_key_rna:
-            self.X_rna = self.rna_adata.obsm[obsm_key_rna]
+            self.X_rna = self.rna_adata.obsm[obsm_key_rna].values
         else:
             self.X_rna = self.rna_adata.X
         

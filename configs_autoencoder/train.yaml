@@ -1,0 +1,20 @@
+# === Dataset configuration ===
+adata_path: /nfs/homedirs/pala/scportrait_ot/project_folder/data/scrnaseq/sce_converted_processed_discovery.h5ad
+count_label: X_counts
+embedding_label: HARMONY
+batch_label: donor_id
+
+# === Model configuration ===
+dims: [64, 64]
+batch_norm: false
+dropout: false
+dropout_p: 0.0
+batch_encoding: false
+batch_encoding_dim: Null
+learning_rate: 0.001
+
+# === Training configuration ===
+batch_size: 256
+max_epochs: 100
+training_dir: /nfs/homedirs/pala/scportrait_ot/project_folder/experiements/  # can be overridden by hydra runtime config
+project: decoder_55

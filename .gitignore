@@ -198,3 +198,9 @@ cython_debug/
 
 # Additional folders
 multirun/
+outputs/
+
+# Additional file extensions 
+*.out
+*.sbatch
+*.err
