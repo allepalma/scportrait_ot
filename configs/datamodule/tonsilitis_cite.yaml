@@ -1,0 +1,9 @@
+rna_adata_path: /lustre/groups/ml01/workspace/alessandro.palma/scportrait/data/citeseq/CITEseq_protein_processed.h5ad
+# rna_adata_path: /lustre/groups/ml01/workspace/alessandro.palma/scportrait/data/scrnaseq/sce_converted_processed_discovery.h5ad
+codex_adata_path: /lustre/groups/ml01/workspace/alessandro.palma/scportrait/data/codex/citeseq/cellfeaturization_results_tonsilitis_processed_std.h5ad
+# codex_adata_path: /lustre/groups/ml01/workspace/alessandro.palma/scportrait/data/codex/cellfeaturization_results_tonsilitis_processed.h5ad
+label_columns: ["annotation_figure_1"]
+obsm_key_rna: X_harmony_RNA
+obsm_key_codex: Null
+rna_sampling_label: annotation_figure_1 
+uniform_sampling_rna: False

@@ -17,4 +17,48 @@ See 'conda init --help' for more information and options.
 IMPORTANT: You may need to close and restart your shell after running 'conda init'.
 
 
-slurmstepd: error: *** JOB 37083410 ON cpusrv111 CANCELLED AT 2025-06-23T08:55:30 ***
+Error executing job with overrides: ['model.distance=euclidean', 'datamodule=tonsilitis', 'hparam_search=sweep_distance', 'logger.project=scportrait_ot_sweep_distance_tonsilitis']
+Traceback (most recent call last):
+  File "/ictstr01/home/icb/alessandro.palma/environment/scportrait_ot/src/main.py", line 30, in <module>
+    train()
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/main.py", line 94, in decorated_main
+    _run_hydra(
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/utils.py", line 394, in _run_hydra
+    _run_app(
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/utils.py", line 465, in _run_app
+    run_and_report(
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/utils.py", line 223, in run_and_report
+    raise ex
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/utils.py", line 220, in run_and_report
+    return func()
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/utils.py", line 466, in <lambda>
+    lambda: hydra.multirun(
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/hydra.py", line 162, in multirun
+    ret = sweeper.sweep(arguments=task_overrides)
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/core_plugins/basic_sweeper.py", line 181, in sweep
+    _ = r.return_value
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/core/utils.py", line 260, in return_value
+    raise self._return_value
+FileNotFoundError: [Errno 2] Unable to synchronously open file (unable to open file: name = '/nfs/homedirs/pala/scportrait_ot/project_folder/data/scrnaseq/sce_converted_processed_discovery.h5ad', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)
+Traceback (most recent call last):
+  File "/ictstr01/home/icb/alessandro.palma/environment/scportrait_ot/src/main.py", line 30, in <module>
+    train()
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/main.py", line 94, in decorated_main
+    _run_hydra(
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/utils.py", line 394, in _run_hydra
+    _run_app(
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/utils.py", line 465, in _run_app
+    run_and_report(
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/utils.py", line 223, in run_and_report
+    raise ex
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/utils.py", line 220, in run_and_report
+    return func()
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/utils.py", line 466, in <lambda>
+    lambda: hydra.multirun(
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/hydra.py", line 162, in multirun
+    ret = sweeper.sweep(arguments=task_overrides)
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/_internal/core_plugins/basic_sweeper.py", line 181, in sweep
+    _ = r.return_value
+  File "/home/icb/alessandro.palma/miniconda3/envs/sc_exp_design/lib/python3.10/site-packages/hydra/core/utils.py", line 260, in return_value
+    raise self._return_value
+FileNotFoundError: [Errno 2] Unable to synchronously open file (unable to open file: name = '/nfs/homedirs/pala/scportrait_ot/project_folder/data/scrnaseq/sce_converted_processed_discovery.h5ad', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)

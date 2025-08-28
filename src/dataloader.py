@@ -1,5 +1,6 @@
 # Imports
 import numpy as np 
+import pandas as pd 
 import scipy.sparse as sp
 import torch
 from torch.utils.data import Dataset
@@ -69,7 +70,11 @@ class SingleCellAndCodexDataset(Dataset):
         
         # Get the cell state to match 
         if obsm_key_rna:
-            self.X_rna = self.rna_adata.obsm[obsm_key_rna].values
+            obsm_rna = self.rna_adata.obsm[obsm_key_rna]
+            if isinstance(obsm_rna, pd.DataFrame):
+                self.X_rna = obsm_rna.values
+            else:
+                self.X_rna = obsm_rna
         else:
             self.X_rna = self.rna_adata.X
         
