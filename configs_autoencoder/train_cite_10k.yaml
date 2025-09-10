@@ -1,6 +1,6 @@
 # === Dataset configuration ===
 adata_path: /home/icb/alessandro.palma/environment/scportrait_ot/project_folder/data/citeseq/CITEseq_rna_processed.h5ad
-count_label: X_counts
+count_label: X_normalized_10k
 embedding_label: X_harmony_RNA
 batch_label: donor_id
 
@@ -16,6 +16,6 @@ likelihood: nb
 
 # === Training configuration ===
 batch_size: 256
-max_epochs: 100
+max_epochs: 200
 training_dir: /home/icb/alessandro.palma/environment/scportrait_ot/project_folder/experiements  # can be overridden by hydra runtime config
-project: decoder_55
+project: decoder_cite_10k

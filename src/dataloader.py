@@ -21,13 +21,17 @@ class EmbeddingDecoderDataset(Dataset):
         
         # Convert count matrix and embeddings to PyTorch tensors
         if count_label is not None:
-            self.X = torch.from_numpy(self.adata.layers[count_label].astype('float32'))
+            self.X = torch.from_numpy(self.adata.layers[count_label].todense().astype('float32'))
         else:
             if sp.issparse(self.adata.X):
                 self.X = torch.from_numpy(self.adata.X.todense().astype('float32'))
             else:
                 self.X = torch.from_numpy(self.adata.X.astype('float32'))
-        self.X_emb = torch.from_numpy(self.adata.obsm[embedding_label].values.astype('float32'))
+
+        try: 
+            self.X_emb = torch.from_numpy(self.adata.obsm[embedding_label].values.astype('float32'))
+        except:
+            self.X_emb = torch.from_numpy(self.adata.obsm[embedding_label].astype('float32'))
         
         self.input_dim = self.X_emb.shape[1]
         self.output_dim = self.X.shape[1]

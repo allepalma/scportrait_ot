@@ -2,8 +2,6 @@ import torch
 import torch.nn.functional as F
 import pytorch_lightning as pl
 from scvi.distributions import NegativeBinomial
-
-import sys 
 from network import MLP
 
 class DecoderFromHarmony(pl.LightningModule):
@@ -17,7 +15,8 @@ class DecoderFromHarmony(pl.LightningModule):
                  batch_encoding, 
                  batch_encoding_dim, 
                  learning_rate,
-                 weight_decay=1e-6
+                 weight_decay=1e-6,
+                 likelihood: str = "nb"  # <-- NEW ARG
                 ):
         super().__init__()
 
@@ -32,13 +31,17 @@ class DecoderFromHarmony(pl.LightningModule):
         self.batch_encoding_dim = batch_encoding_dim
         self.learning_rate = learning_rate 
         self.weight_decay = weight_decay
+        assert likelihood in ["nb", "gaussian"], \
+            f"likelihood must be 'nb' or 'gaussian', got {likelihood}"
+        self.likelihood = likelihood
 
         if batch_encoding: 
             self.input_dim = self.input_dim + self.batch_encoding_dim
         
-        # Initialize theta 
-        self.theta = torch.nn.Parameter(torch.randn(output_dim), 
-                                        requires_grad=True)
+        # Initialize theta (only for NB decoding)
+        if self.likelihood == "nb":
+            self.theta = torch.nn.Parameter(torch.randn(output_dim), 
+                                            requires_grad=True)
 
         # Decoder 
         layer_dims = [input_dim] + self.dims + [output_dim]
@@ -58,21 +61,25 @@ class DecoderFromHarmony(pl.LightningModule):
             x = torch.cat([x, batch], dim=1)
 
         # Decode 
-        mu_hat = self.decoder(x)
-        mu_hat = F.softmax(mu_hat, dim=1)
-        px = NegativeBinomial(mu=mu_hat * size_factor, theta=torch.exp(self.theta))
+        y_hat = self.decoder(x)
 
-        loss = -px.log_prob(y).sum(1).mean()
+        if self.likelihood == "gaussian":
+            # --- Gaussian decoding with MSE ---
+            loss = F.mse_loss(y_hat, y, reduction="mean")
+        else:  # "nb"
+            # --- Negative Binomial decoding ---
+            mu_hat = F.softmax(y_hat, dim=1)
+            px = NegativeBinomial(mu=mu_hat * size_factor, theta=torch.exp(self.theta))
+            loss = -px.log_prob(y).sum(1).mean()
+
         self.log(f'{dataset_type}/loss', loss, on_epoch=True, prog_bar=True)
         return loss
 
     def training_step(self, batch, batch_idx):
-        loss = self._step(batch, "train")
-        return loss
+        return self._step(batch, "train")
 
     def validation_step(self, batch, batch_idx):
-        loss = self._step(batch, "valid")
-        return loss
+        return self._step(batch, "valid")
 
     def configure_optimizers(self):
         return torch.optim.AdamW(self.parameters(),

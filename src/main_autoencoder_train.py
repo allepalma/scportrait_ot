@@ -41,7 +41,8 @@ def train(cfg: DictConfig):
                                         dropout_p=cfg.dropout_p, 
                                         batch_encoding=cfg.batch_encoding, 
                                         batch_encoding_dim=cfg.batch_encoding_dim,
-                                        learning_rate=cfg.learning_rate
+                                        learning_rate=cfg.learning_rate,
+                                        likelihood=cfg.likelihood
                                         )
     
     # Prepare training
