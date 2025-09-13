@@ -1,6 +1,6 @@
 from pathlib import Path
-from dataloader import SingleCellAndCodexDataset 
-from model import FlowMatchingModelWrapper
+from scportrait_ot.dataloader import SingleCellAndCodexDataset 
+from scportrait_ot.model import FlowMatchingModelWrapper
 from torch.utils.data import random_split
 import torch
 from pytorch_lightning.callbacks import ModelCheckpoint

@@ -2,8 +2,8 @@ import hydra
 import torch
 from omegaconf import DictConfig
 from torch.utils.data import random_split
-from dataloader import EmbeddingDecoderDataset
-from decoding_modules import DecoderFromHarmony
+from scportrait_ot.dataloader import EmbeddingDecoderDataset
+from scportrait_ot.decoding_modules import DecoderFromHarmony
 from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning import Trainer

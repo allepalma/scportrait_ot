@@ -4,7 +4,7 @@ from typing import Union
 
 import torch
 
-from coupling import *
+from scportrait_ot.coupling import *
 
 def pad_t_like_x(t, x):
     """Function to reshape the time vector t by the number of dimensions of x.

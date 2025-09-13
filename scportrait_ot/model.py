@@ -1,8 +1,8 @@
 import torch
 import pytorch_lightning as pl
-from flow_matching import SourceConditionalFlowMatcher
-from network import TimeConditionedMLP
-from ode import ConditionalODE
+from scportrait_ot.flow_matching import SourceConditionalFlowMatcher
+from scportrait_ot.network import TimeConditionedMLP
+from scportrait_ot.ode import ConditionalODE
 from torchdiffeq import odeint
 
 class FlowMatchingModelWrapper(pl.LightningModule):

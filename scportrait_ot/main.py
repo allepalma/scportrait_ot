@@ -1,7 +1,7 @@
 import hydra
 import sys
 from omegaconf import DictConfig
-from experiment import FlowMatchingExperiment
+from scportrait_ot.experiment import FlowMatchingExperiment
 
 @hydra.main(config_path="../configs", config_name="train", version_base=None)
 def train(cfg: DictConfig):

@@ -2,7 +2,7 @@ import torch
 import torch.nn.functional as F
 import pytorch_lightning as pl
 from scvi.distributions import NegativeBinomial
-from network import MLP
+from scportrait_ot.network import MLP
 
 class DecoderFromHarmony(pl.LightningModule):
     def __init__(self, 
